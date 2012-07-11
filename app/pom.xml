@@ -13,6 +13,13 @@
     <name>Android Google Drive Browser</name>
     <artifactId>android-google-drive-browser</artifactId>
 
+    <repositories>
+        <repository>
+            <id>google-api-services</id>
+            <url>http://mavenrepo.google-api-java-client.googlecode.com/hg</url>
+        </repository>
+    </repositories>
+
     <properties>
         <abs.version>4.1.0</abs.version>
         <vpi.version>2.3.1</vpi.version>
@@ -51,9 +58,19 @@
             <version>1.4</version>
         </dependency>
         <dependency>
+            <groupId>com.madgag</groupId>
+            <artifactId>android-viewholder-listviews</artifactId>
+            <version>0.7</version>
+        </dependency>
+        <dependency>
             <groupId>org.roboguice</groupId>
             <artifactId>roboguice</artifactId>
             <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>11.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
