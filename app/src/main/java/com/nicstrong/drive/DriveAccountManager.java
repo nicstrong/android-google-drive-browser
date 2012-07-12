@@ -29,21 +29,28 @@ public class DriveAccountManager {
 
 	public List<DriveAccount> getAccounts() {
 		List<DriveAccount> accounts = Lists.newArrayList();
-		DriveAccount first = null;
-		for (Account account: accountManager.getAccounts()) {
+        SharedPreferences prefs = sharedPreferencesProvider.get();
+        String currentAccountName = prefs.getString(PREF_CURRENT_ACCOUNT, null);
+
+        for (Account account: accountManager.getAccounts()) {
 			DriveAccount acc = new DriveAccount(account);
-			if (first == null) {
-				first = acc;
+			if (currentAccount == null) {
+                currentAccount = acc;
 			}
+            if (account.name.equals(currentAccountName)) {
+                currentAccount = acc;
+            }
 			accounts.add(acc);
 		}
 
-//		SharedPreferences prefs = sharedPreferencesProvider.get();
-//
-//		if (prefs.contains(PREF_CURRENT_ACCOUNT)) {
-//			if ()
-//		}
+        // Current account will either be first account or previously selected account.
+        // Try get an AuthToken
+        currentAccount.fetchAuthToken(accountManager, AUTH_TOKEN_TYPE);
 
 		return accounts;
 	}
+
+    public DriveAccount getCurrentAccount() {
+        return currentAccount;
+    }
 }

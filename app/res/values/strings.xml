@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Drive</string>
+    <string name="no_connection_cant_login">Can\'t sign in. Check your network connection.</string>
+    <string name="login_slow">The login is taking a long time.</string>
+    <string name="retry">Retry</string>
 </resources>
