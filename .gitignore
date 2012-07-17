@@ -20,4 +20,5 @@ local.properties
 # idea files
 *.iml
 .idea/
+out/
 
