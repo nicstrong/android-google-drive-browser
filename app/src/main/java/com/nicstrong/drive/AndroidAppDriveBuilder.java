@@ -8,12 +8,13 @@ import com.google.api.services.drive.DriveRequest;
 import java.io.IOException;
 
 public class AndroidAppDriveBuilder implements DriveBuilder {
-    private final String apiKey;
     private final String packageName;
     private final CredentialProvider credentialProvider;
+    private ApiKeyProvider apiKeyProvider;
 
-    public AndroidAppDriveBuilder(String apiKey, String packageName, CredentialProvider credentialProvider) {
-        this.apiKey = apiKey;
+    public AndroidAppDriveBuilder(ApiKeyProvider apiKeyProvider,
+                                  String packageName, CredentialProvider credentialProvider) {
+        this.apiKeyProvider = apiKeyProvider;
         this.packageName = packageName;
         this.credentialProvider = credentialProvider;
     }
@@ -26,7 +27,7 @@ public class AndroidAppDriveBuilder implements DriveBuilder {
             protected void initializeJsonRequest(AbstractGoogleJsonClientRequest<?> request) throws IOException {
                 DriveRequest driveRequest = (DriveRequest) request;
                 driveRequest.setPrettyPrint(true);
-                driveRequest.setKey(apiKey);
+                driveRequest.setKey(apiKeyProvider.getApiKey());
                 driveRequest.setOauthToken(credentialProvider.get().getAccessToken());
             }
         });

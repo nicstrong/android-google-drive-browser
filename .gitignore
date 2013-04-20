@@ -22,3 +22,5 @@ local.properties
 .idea/
 out/
 
+# Stop me accidentally checking in my API key
+*api_keys.xml

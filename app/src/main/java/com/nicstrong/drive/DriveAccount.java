@@ -1,10 +1,7 @@
 package com.nicstrong.drive;
 
-
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-
-import java.util.logging.Logger;
 
 public class DriveAccount implements CredentialProvider {
     private String name;
