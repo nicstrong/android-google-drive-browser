@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <version>1.0.0</version>
+        <version>0.9.0</version>
         <groupId>com.nicstrong.android</groupId>
         <artifactId>android-google-drive-browser-parent</artifactId>
     </parent>
@@ -16,14 +16,14 @@
     <repositories>
         <repository>
             <id>google-api-services</id>
-            <url>http://mavenrepo.google-api-java-client.googlecode.com/hg</url>
+            <!--<url>http://mavenrepo.google-api-java-client.googlecode.com/hg</url>-->
+            <url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
         </repository>
     </repositories>
 
     <properties>
-        <abs.version>4.1.0</abs.version>
-        <vpi.version>2.3.1</vpi.version>
-        <gac.version>1.10.3-beta</gac.version>
+        <gac.version>1.14.1-beta</gac.version>
+        <gda.version>v2-rev66-1.14.1-beta</gda.version>
     </properties>
 
     <dependencies>
@@ -41,21 +41,14 @@
         </dependency>
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
-            <artifactId>library</artifactId>
-            <version>${abs.version}</version>
+            <artifactId>actionbarsherlock</artifactId>
+            <version>4.3.0</version>
             <type>apklib</type>
-        </dependency>
-        <dependency>
-            <groupId>com.actionbarsherlock</groupId>
-            <artifactId>library</artifactId>
-            <version>${abs.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.rtyley</groupId>
             <artifactId>roboguice-sherlock</artifactId>
-            <version>1.4</version>
+            <version>1.5</version>
         </dependency>
         <dependency>
             <groupId>com.madgag</groupId>
@@ -68,9 +61,15 @@
             <version>2.0</version>
         </dependency>
         <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>wishlist</artifactId>
+            <version>0.9</version>
+            <type>apklib</type>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>11.0.1</version>
+            <version>14.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
@@ -83,12 +82,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
-            <groupId>com.viewpagerindicator</groupId>
-            <artifactId>library</artifactId>
-            <version>${vpi.version}</version>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+            <version>6</version>
             <type>apklib</type>
         </dependency>
+
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
@@ -112,9 +113,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client-android2</artifactId>
+            <artifactId>google-api-client-android</artifactId>
             <version>${gac.version}</version>
             <exclusions>
                 <exclusion>
@@ -133,12 +135,17 @@
                     <artifactId>android</artifactId>
                     <groupId>com.google.android</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>com.google.android.google-play-services</artifactId>
+                    <groupId>google-play-services</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-drive</artifactId>
-            <version>v2-rev1-1.7.2-beta</version>
+            <version>${gda.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>xpp3</artifactId>
@@ -158,52 +165,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.google.http-client</groupId>
-            <artifactId>google-http-client-android2</artifactId>
-            <version>${gac.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>xpp3</artifactId>
-                    <groupId>xpp3</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>httpclient</artifactId>
-                    <groupId>org.apache.httpcomponents</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>junit</artifactId>
-                    <groupId>junit</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>android</artifactId>
-                    <groupId>com.google.android</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.google.http-client</groupId>
-            <artifactId>google-http-client-android3</artifactId>
-            <version>${gac.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>xpp3</artifactId>
-                    <groupId>xpp3</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>httpclient</artifactId>
-                    <groupId>org.apache.httpcomponents</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>junit</artifactId>
-                    <groupId>junit</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>android</artifactId>
-                    <groupId>com.google.android</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+
     </dependencies>
     <build>
         <plugins>

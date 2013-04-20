@@ -1,54 +1,39 @@
 package com.nicstrong.drive;
 
 
-import android.accounts.Account;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
-import android.text.TextUtils;
-import com.google.api.client.googleapis.extensions.android2.auth.GoogleAccountManager;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DriveAccount {
-    private static final Logger logger = Logger.getLogger(DriveAccount.class.getName());
-	private Account account;
-	private String authToken;
+public class DriveAccount implements CredentialProvider {
+    private String name;
+    private Credential credential;
 
-	public DriveAccount(Account acc) {
-		this.account = acc;
+	public DriveAccount(String name) {
+		this.name = name;
+        this.credential = new GoogleCredential();
 	}
 
-    public boolean hasAuthToken() {
-        return !TextUtils.isEmpty(authToken);
+    public boolean hasAccessToken() {
+        return credential.getAccessToken() != null;
     }
-	public String getAuthToken() {
-		return authToken;
-	}
 
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
+	public void setAccessToken(String accessToken) {
+        credential.setAccessToken(accessToken);
 	}
 
     public String getName() {
-        return account.name;
+        return name;
     }
 
 	@Override
 	public String toString() {
-		return account.name;
+		return name;
 	}
 
-    public void fetchAuthToken(GoogleAccountManager accountManager, String tokenType) {
-        try {
-            authToken = accountManager.getAccountManager().blockingGetAuthToken(account, tokenType, false);
-        } catch (AuthenticatorException e) {
-            logger.log(Level.WARNING, "Failed to fetch AuthToken", e);
-        } catch (OperationCanceledException e) {
-            logger.log(Level.WARNING, "Failed to fetch AuthToken", e);
-        } catch (IOException e) {
-            logger.log(Level.WARNING, "Failed to fetch AuthToken", e);
-        }
+    @Override
+    public Credential get() {
+        return credential;
     }
 }

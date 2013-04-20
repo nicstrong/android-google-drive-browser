@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <version>1.0.0</version>
+    <version>0.9.0</version>
     <groupId>com.nicstrong.android</groupId>
     <artifactId>android-google-drive-browser-parent</artifactId>
     <packaging>pom</packaging>
@@ -23,13 +23,13 @@
                 <plugin>
                     <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.5.3</version>
                     <extensions>true</extensions>
                     <configuration>
                         <sdk>
-                            <platform>15</platform>
+                            <platform>17</platform>
                         </sdk>
-                        <undeployBeforeDeploy>true</undeployBeforeDeploy>
+
                         <proguard>
                             <config>../proguard.cfg</config>
                         </proguard>

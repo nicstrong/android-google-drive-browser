@@ -57,7 +57,8 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements Loader
 
         ActionBar actionBar = getSupportActionBar();
         for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i).getName().equals(accountManager.getCurrentAccount().getName())) {
+            if (accountManager.getCurrentAccount() != null &&
+                    accounts.get(i).getName().equals(accountManager.getCurrentAccount().getName())) {
                 actionBar.setSelectedNavigationItem(i);
                 break;
             }
@@ -108,7 +109,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements Loader
     }
 
     private void tryAuthenticate() {
-        if (!currentAccount.hasAuthToken()) {
+        if (!currentAccount.hasAccessToken()) {
 
         }
     }
