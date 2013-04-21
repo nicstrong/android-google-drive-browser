@@ -10,16 +10,16 @@ public class GoogleDriveContentProvider extends RoboContentProvider {
     private static final int FILES = 1;
     private static final int FILE_ID = 2;
 
-    private static UriMatcher URI_MATCHER = null;
+    private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static {
+        URI_MATCHER.addURI(GoogleDriveContract.AUTHORITY, "files", FILES);
+        URI_MATCHER.addURI(GoogleDriveContract.AUTHORITY, "files/*", FILE_ID);
+    }
 
     @Override
     public boolean onCreate() {
-        if (URI_MATCHER == null) {
-            URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-            // can't do at static construction because we need a context to read the online authority
-            URI_MATCHER.addURI(GoogleDriveContract.AUTHORITY, "files", FILES);
-            URI_MATCHER.addURI(GoogleDriveContract.AUTHORITY, "files/*", FILE_ID);
-        }
+        super.onCreate();
         return true;
     }
 
