@@ -1,9 +1,8 @@
-package com.nicstrong.drive;
+package com.nicstrong.android.drive;
 
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
@@ -14,7 +13,6 @@ import java.util.List;
 
 public class DriveService {
     public static final String FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
-    public static final String AUTH_TOKEN_TYPE = "oauth2:" + DriveScopes.DRIVE;
 
     private final Drive drive;
 

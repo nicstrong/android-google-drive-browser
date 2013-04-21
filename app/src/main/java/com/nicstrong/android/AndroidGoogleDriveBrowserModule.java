@@ -1,9 +1,8 @@
-package com.nicstrong;
+package com.nicstrong.android;
 
 
 import com.google.inject.AbstractModule;
-import com.nicstrong.drive.DriveAccountManager;
-import com.nicstrong.drive.DriveModule;
+import com.nicstrong.android.drive.DriveModule;
 
 public class AndroidGoogleDriveBrowserModule extends AbstractModule {
 	@Override

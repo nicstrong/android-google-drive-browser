@@ -1,8 +1,10 @@
-package com.nicstrong.ui;
+package com.nicstrong.android.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -11,21 +13,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.inject.Inject;
 import com.madgag.android.listviews.ViewHolder;
 import com.madgag.android.listviews.ViewHolderFactory;
 import com.madgag.android.listviews.ViewHoldingListAdapter;
-import com.nicstrong.drive.DriveAccount;
-import com.nicstrong.drive.DriveAccountManager;
+import com.nicstrong.android.drive.DriveAccount;
+import com.nicstrong.android.drive.DriveAccountManager;
 import com.nicstrong.googledrivebrowser.R;
-import com.nicstrong.util.InjectableAsyncLoader;
+import com.nicstrong.android.util.InjectableAsyncLoader;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST;
 import static com.madgag.android.listviews.ViewInflator.viewInflatorFor;
 
 public class HomeActivity extends RoboSherlockFragmentActivity implements LoaderManager.LoaderCallbacks<List<DriveAccount>>, ActionBar.OnNavigationListener {
+    private static final Logger logger = Logger.getLogger(HomeActivity.class.getName());
+
+    private static final int REQUEST_CODE_GOOGLE_AUTH = 1;
+    private static final int REQUEST_CODE_PLAY_SERVICES_ERR = 2;
+
     @Inject
     private DriveAccountManager accountManager;
 
@@ -103,14 +117,87 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements Loader
             .replace(R.id.fragment_container, new AccountAuthProgressFragment(), "loading")
             .commit();
 
+        accountManager.setCurrentAccount(currentAccount);
+
         tryAuthenticate();
 
         return false;
     }
 
     private void tryAuthenticate() {
-        if (!currentAccount.hasAccessToken()) {
+        GoogleAuthAsyncTask task = new GoogleAuthAsyncTask(this);
+        task.execute(accountManager.getCurrentAccount());
+    }
 
+    public class GoogleAuthAsyncTask extends AsyncTask<DriveAccount, Void, Exception> {
+        private Context context;
+
+        public GoogleAuthAsyncTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Exception doInBackground(DriveAccount... params) {
+            DriveAccount account = params[0];
+
+            if (account != null && account.hasAccessToken()) {
+                GoogleAuthUtil.invalidateToken(context, account.getAccessToken());
+            }
+
+            try {
+                account.setAccessToken(GoogleAuthUtil.getToken(context, account.getName(), account.getScope()));
+            } catch (IOException e) {
+                return e;
+            } catch (GoogleAuthException e) {
+                return e;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Exception ex) {
+            if (ex != null) {
+                if (ex instanceof GooglePlayServicesAvailabilityException) {
+                    GooglePlayServicesAvailabilityException playEx = (GooglePlayServicesAvailabilityException) ex;
+                    PlayServicesErrorDialogFragment.show(HomeActivity.this, playEx.getConnectionStatusCode(),
+                            REQUEST_CODE_PLAY_SERVICES_ERR);
+                    return;
+                }
+
+                if (ex instanceof UserRecoverableAuthException) {
+                    UserRecoverableAuthException userAuthEx = (UserRecoverableAuthException) ex;
+                    HomeActivity.this.startActivityForResult(userAuthEx.getIntent(),
+                            REQUEST_CODE_GOOGLE_AUTH);
+                    return;
+                }
+
+                logger.log(Level.SEVERE, "Play Services Error", ex);
+
+                if (ex instanceof IOException) {
+                    final Resources resources = HomeActivity.this.getResources();
+                    MessageDialogFragment.show(HomeActivity.this, resources.getString(R.string.network_error_title),
+                            resources.getString(R.string.network_error_message));
+                    return;
+                }
+
+                if (ex instanceof IOException) {
+                    final Resources resources = HomeActivity.this.getResources();
+                    MessageDialogFragment.show(HomeActivity.this, resources.getString(R.string.network_error_title),
+                            resources.getString(R.string.network_error_message));
+                    return;
+                }
+
+                if (ex instanceof GoogleAuthException) {
+                    final Resources resources = HomeActivity.this.getResources();
+                    MessageDialogFragment.show(HomeActivity.this, resources.getString(R.string.unknown_play_services_error_title),
+                            resources.getString(R.string.unknown_play_services_error_title));
+                    return;
+                }
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new DriveFolderFragment(), "loading")
+                        .commit();
+            }
         }
     }
 

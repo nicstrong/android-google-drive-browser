@@ -1,5 +1,6 @@
 package com.nicstrong.drive;
 
+import com.nicstrong.android.drive.QueryBuilder;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;

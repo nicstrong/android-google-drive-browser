@@ -1,4 +1,4 @@
-package com.nicstrong.util;
+package com.nicstrong.android.util;
 
 import android.content.Context;
 import com.google.inject.Inject;

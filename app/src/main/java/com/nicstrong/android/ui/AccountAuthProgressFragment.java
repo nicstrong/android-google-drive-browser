@@ -1,4 +1,4 @@
-package com.nicstrong.ui;
+package com.nicstrong.android.ui;
 
 import android.os.Bundle;
 import android.os.Handler;

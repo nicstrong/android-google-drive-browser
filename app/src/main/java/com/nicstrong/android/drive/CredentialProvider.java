@@ -1,4 +1,4 @@
-package com.nicstrong.drive;
+package com.nicstrong.android.drive;
 
 import com.google.api.client.auth.oauth2.Credential;
 

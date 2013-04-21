@@ -4,4 +4,8 @@
     <string name="no_connection_cant_login">Can\'t sign in. Check your network connection.</string>
     <string name="login_slow">The login is taking a long time.</string>
     <string name="retry">Retry</string>
+    <string name="network_error_title">Network Error</string>
+    <string name="network_error_message">There was a problem communicating with the Google Services. Please try again later</string>
+    <string name="unknown_play_services_error_title">Unknown Error</string>
+    <string name="unknown_play_services_error_message">There was an unknown error with Google Play Services</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.nicstrong.drive;
+package com.nicstrong.android.drive;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

@@ -1,4 +1,4 @@
-package com.nicstrong.drive;
+package com.nicstrong.android.drive;
 
 public class QueryBuilder {
 	private String title;

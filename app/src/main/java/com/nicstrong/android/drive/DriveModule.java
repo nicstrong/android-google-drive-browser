@@ -1,4 +1,4 @@
-package com.nicstrong.drive;
+package com.nicstrong.android.drive;
 
 import android.content.res.Resources;
 import com.google.inject.AbstractModule;
