@@ -1,6 +1,7 @@
 package com.nicstrong.android.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -46,13 +47,23 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements Loader
     private List<DriveAccount> accounts;
     private ViewHoldingListAdapter<DriveAccount> accountsAdapter;
     public boolean cancelAuth = false;
-    private DriveAccount currentAccount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
         getSupportLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_GOOGLE_AUTH:
+            case REQUEST_CODE_PLAY_SERVICES_ERR:
+                tryAuthenticate();
+                return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -112,7 +123,7 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements Loader
         }
 
         cancelAuth = false;
-        currentAccount = accountsAdapter.getItem(itemPosition);
+        DriveAccount currentAccount = accountsAdapter.getItem(itemPosition);
         getSupportFragmentManager().beginTransaction()
             .replace(R.id.fragment_container, new AccountAuthProgressFragment(), "loading")
             .commit();
@@ -140,18 +151,20 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements Loader
         protected Exception doInBackground(DriveAccount... params) {
             DriveAccount account = params[0];
 
+            logger.fine("Trying auth for account " + account);
+
             if (account != null && account.hasAccessToken()) {
                 GoogleAuthUtil.invalidateToken(context, account.getAccessToken());
             }
 
             try {
                 account.setAccessToken(GoogleAuthUtil.getToken(context, account.getName(), account.getScope()));
+                return null;
             } catch (IOException e) {
                 return e;
             } catch (GoogleAuthException e) {
                 return e;
             }
-            return null;
         }
 
         @Override
@@ -194,13 +207,18 @@ public class HomeActivity extends RoboSherlockFragmentActivity implements Loader
                     return;
                 }
 
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new DriveFolderFragment(), "loading")
-                        .commit();
             }
+
+            logger.fine("Setting container fragment to Drive files list");
+            DriveFilesListFragment newFragment = new DriveFilesListFragment();
+            Bundle args = new Bundle();
+            args.putString(DriveFilesListFragment.ARG_PARENT_FILE_ID, "root");
+            newFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, newFragment, "drive_files_list")
+                    .commit();
         }
     }
-
     public static class DriveAccountLoader extends InjectableAsyncLoader<List<DriveAccount>> {
         private final DriveAccountManager accountManager;
 

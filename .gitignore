@@ -24,3 +24,4 @@ out/
 
 # Stop me accidentally checking in my API key
 *api_keys.xml
+.DS_Store

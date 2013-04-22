@@ -29,7 +29,6 @@
                         <sdk>
                             <platform>17</platform>
                         </sdk>
-
                         <proguard>
                             <config>../proguard.cfg</config>
                         </proguard>

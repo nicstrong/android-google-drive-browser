@@ -6,8 +6,11 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveRequest;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class AndroidAppDriveBuilder implements DriveBuilder {
+    private static final Logger logger = Logger.getLogger(AndroidAppDriveBuilder.class.getName());
+
     private final String packageName;
     private final CredentialProvider credentialProvider;
     private ApiKeyProvider apiKeyProvider;
@@ -29,6 +32,8 @@ public class AndroidAppDriveBuilder implements DriveBuilder {
                 driveRequest.setPrettyPrint(true);
                 driveRequest.setKey(apiKeyProvider.getApiKey());
                 driveRequest.setOauthToken(credentialProvider.get().getAccessToken());
+
+                logger.info("{key} Preparing request with key=" + apiKeyProvider.getApiKey() + " and oauthToken=" + credentialProvider.get().getAccessToken());
             }
         });
     }

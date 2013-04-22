@@ -16,6 +16,6 @@
 -->
 <resources>
     <string-array name="roboguice_modules">
-        <item>com.nicstrong.AndroidGoogleDriveBrowserModule</item>
+        <item>com.nicstrong.android.AndroidGoogleDriveBrowserModule</item>
     </string-array>
 </resources>

@@ -8,18 +8,16 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.nicstrong.googledrivebrowser.R;
 
-public class DriveFolderFragment extends SherlockFragment {
-    private static final int TRY_AGAIN_DELAY_MILLIS = 7 * 1000; // 7 seconds
+public class DriveFilesListFragment extends SherlockFragment {
+    public static final String ARG_PARENT_FILE_ID = "parent_file_id";
 
-    private final Handler mHandler = new Handler();
-
-    public DriveFolderFragment() {
+    public DriveFilesListFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_login_loading, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_drive_files_list, container, false);
 
         return rootView;
     }
